@@ -1,12 +1,33 @@
 <template>
     <div class="demo">
         <h1>{{msg}}</h1>
-        <button @click='interogareServer()'>Arata Utilizatori</button>
+        <!-- <button @click='interogareServer()'>Arata Utilizatori</button> -->
         <ul>
-            <li v-for="utilizator in utilizatoriVue" :key="utilizator.Id">
-                {{utilizator.Email}}
+            <li v-for="articol in articole" :key="articol.Id">
+                {{articol.Titlu}}
+                {{articol.DataInregistrare}}
             </li>
         </ul>
+        <div class="element">
+            <el-table
+                :data="tableData"
+                style="width: 100%">
+                <el-table-column                
+                    prop="date"
+                    label="Date"
+                    width="180">
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    label="Name"
+                    width="180">
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="Address">
+                </el-table-column>
+            </el-table>
+        </div>
     </div>
 </template>
 
@@ -16,30 +37,37 @@ export default {
     name: 'First',
     data() {
         return {
-            utilizatoriVue: []
+            articole: [],
+            tableData: [{
+                date: '12.07.2019',
+                name: 'Victor',
+                address: 'aici'
+            }]
         }
     },
     props: {
         msg: String
     },
     methods: {
-        interogareServer(){
-            console.log('da')
-            this.$http.post('api/hei/getServerInfo',{IdUser:20}).then(
+        interogareServer(){            
+            this.$http.post('api/hei/getServerInfo',{}).then(
                 function(response){
                     var body = response.body
-                    this.utilizatoriVue = body.Utilizatori
+                    this.articole = body.Articole
                 }
             )
         }
+    },
+    mounted(){
+        console.log('da')
+        this.interogareServer();
     }
 }
 </script>
 
 <style>
     .demo {
-        color: brown;
-        background-color: azure;
+        color: brown;        
     }
 </style>
 
